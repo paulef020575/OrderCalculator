@@ -1,0 +1,162 @@
+﻿<UserControl x:Class="OrderCalculator.PrintView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:local="clr-namespace:OrderCalculator"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="800" Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <local:PrintViewModel x:Key="ControlResource" />
+    </UserControl.Resources>
+        <DockPanel>
+        <UniformGrid DockPanel.Dock="Top" Columns="2" HorizontalAlignment="Left">
+            <Button Style="{DynamicResource ResourceKey=MetroCircleButtonStyle}" Width="50" Height="50" 
+                            ToolTip="Печать" Click="Button_Click">
+                <Rectangle Width="20" Height="20">
+                    <Rectangle.Fill>
+                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_printer}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+            <Button Style="{DynamicResource ResourceKey=MetroCircleButtonStyle}" Width="50" Height="50" 
+                            ToolTip="Закрыть" Click="Button_Click_1">
+                <Rectangle Width="20" Height="20">
+                    <Rectangle.Fill>
+                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_close}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+        </UniformGrid>
+            <FlowDocumentPageViewer x:Name="DocViewer" Grid.Row="0" Grid.Column="1" BorderBrush="Gray" BorderThickness="1">
+                <FlowDocument ColumnWidth="999999" DataContext="{Binding Order}" FontFamily="Calibri">
+                    <Paragraph>
+                        <InlineUIContainer BaselineAlignment="Center">
+                            <ContentPresenter Content="{DynamicResource Logo}" Height="50" />
+                        </InlineUIContainer>
+                        <Run Text="ОгОгО Рога и копыта" FontSize="16" FontWeight="Light"/>
+                    </Paragraph>
+                    <Paragraph>
+                        <Run FontSize="24" Text="{Binding Name}" />
+                    </Paragraph>               
+                    <Paragraph>
+                        Заказчик:
+                        <Run FontWeight="SemiBold" Text="{Binding Customer}" />
+                    </Paragraph>
+                    <Paragraph>
+                        Дата создания:
+                        <Run FontWeight="SemiBold" Text="{Binding CreateDate, Mode=OneWay, ConverterCulture=ru}" />
+                    </Paragraph>                                       
+                    <Paragraph>
+                        <TextBlock>Список деталей:</TextBlock>
+                    </Paragraph>
+               
+                    <Table BorderThickness="1" BorderBrush="Black" FontSize="12">
+                        <Table.Columns>
+                            <TableColumn />
+                            <TableColumn />
+                            <TableColumn />
+                            <TableColumn />
+                            <TableColumn />
+                            <TableColumn />
+                        <TableColumn />
+                        <TableColumn />
+                    </Table.Columns>
+                        <Table.RowGroups>
+                            <TableRowGroup>
+                            <TableRow FontWeight="SemiBold">
+                                <TableCell>
+                                    <Paragraph>Наименование</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>Материал</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>Цена за 1 куб.м, руб</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>Размеры, мм</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>Фактура</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>Цена 1 шт, руб</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>Количество, шт.</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>Стоимость, руб</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>Масса 1 шт., кг</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>Общая масса, кг</Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                            <TableRowGroup Name="DetailTable">
+                            </TableRowGroup>
+                        </Table.RowGroups>
+                    </Table>
+                    <Table FontSize="16" BorderBrush="Black" BorderThickness="1">
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell>
+                                    <Paragraph>
+                                        <Run>Стоимость, руб</Run>
+                                    </Paragraph>
+                                </TableCell>
+                                <TableCell FontWeight="SemiBold" TextAlignment="Right">
+                                    <Paragraph>
+                                        <Run Text="{Binding Path=Cost,ConverterCulture=ru,Mode=OneWay, StringFormat=N2}" />
+                                    </Paragraph>
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>
+                                    <Paragraph>
+                                        <Run>Скидка, %</Run>
+                                    </Paragraph>
+                                </TableCell>
+                                <TableCell FontWeight="SemiBold" TextAlignment="Right">
+                                    <Paragraph>
+                                        <Run Text="{Binding Path=Discount}" />
+                                    </Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        <TableRow FontWeight="Bold">
+                            <TableCell>
+                                <Paragraph>
+                                    <Run>К оплате, руб</Run>
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell FontWeight="SemiBold" TextAlignment="Right">
+                                <Paragraph>
+                                    <Run Text="{Binding Path=Amount,ConverterCulture=ru, Mode=OneWay,StringFormat=N2}" />
+                                </Paragraph>
+                            </TableCell>
+                        </TableRow>
+                    </TableRowGroup>
+                    <TableRowGroup>
+                    <TableRow>
+                            <TableCell BorderThickness="1" BorderBrush="Black">
+                            <Paragraph>
+                                <Run>Общая масса</Run>
+                            </Paragraph>
+                        </TableCell>
+                        <TableCell TextAlignment="Right" BorderThickness="1" BorderBrush="Black">
+                            <Paragraph>
+                                <Run Text="{Binding Path=Weight,ConverterCulture=ru, Mode=OneWay,StringFormat=N2}" />
+                            </Paragraph>
+                        </TableCell>
+                    </TableRow>
+                    </TableRowGroup>
+                </Table>
+                </FlowDocument>
+        </FlowDocumentPageViewer>
+    </DockPanel>
+</UserControl>
